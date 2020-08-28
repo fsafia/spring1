@@ -58,6 +58,18 @@ public class UserRepository {
         return new User(-1, "", "");
     }
 
+    public void updateById(String login, int id) {
+        try {
+            String sql = String.format("update users set login = '%s' where id = '%s'", login, id);
+            PreparedStatement stmt = conn.prepareStatement(sql
+                    /*"update users set login = ? where id = ?"*/);
+            int a = stmt.executeUpdate();
+            System.out.println(stmt.executeUpdate());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<User> getAllUsers() throws SQLException {
         List<User> res = new ArrayList<>();
         try (Statement stmt = conn.createStatement()) {

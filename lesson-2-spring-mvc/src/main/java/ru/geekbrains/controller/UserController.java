@@ -37,6 +37,7 @@ public class UserController {
     @PostMapping("/update")
     public String updateUser(User user) {
         // TODO написать метод userRepository.update();
+        userRepository.updateById(user.getLogin(), user.getId());
         return "redirect:/user";
     }
 }
