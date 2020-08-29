@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -38,6 +38,6 @@ public class UserController {
     public String updateUser(User user) {
         // TODO написать метод userRepository.update();
         userRepository.updateById(user.getLogin(), user.getId());
-        return "redirect:/user";
+        return "redirect:/users";
     }
 }

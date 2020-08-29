@@ -35,7 +35,7 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <a class="btn btn-primary" href="user.html">Add User</a>
+            <a class="btn btn-primary" th:href="@{/products/product}">Add Product</a>
         </div>
 
         <div class="col-12">
@@ -43,18 +43,19 @@
                 <thead>
                 <tr>
                     <th scope="col">Id</th>
-                    <th scope="col">Login</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Cost</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="user : ${users}">
-                    <th scope="row" th:text="${user.id}">1</th>
-                    <td th:text="${user.login}">User login</td>
-                    <td>
-                        <a class="btn btn-success" th:href="@{/users/{id}(id = ${user.id})}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>
-                    </td>
+                <tr th:each="product : ${allProducts}">
+                    <th scope="row" th:text="${product.id}">1</th>
+                    <td th:text="${product.title}"></td>
+                    <td th:text="${product.cost}"></td>
+                    <!--<td>-->
+                        <!--<a class="btn btn-success" th:href="@{/user/{id}(id = ${user.id})}"><i class="fas fa-edit"></i></a>-->
+                        <!--<a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
