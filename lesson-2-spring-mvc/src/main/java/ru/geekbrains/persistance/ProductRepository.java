@@ -42,7 +42,7 @@ public class ProductRepository {
                 return new Product(rs.getInt(1), rs.getString(2), rs.getInt(3));
             }
         }
-        return new Product(-1, "", -1);
+        return null;
     }
 
     public List<Product> getAllProducts() throws SQLException {

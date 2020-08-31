@@ -34,11 +34,27 @@
 
 <div class="container">
     <div class="row py-2">
-        <div class="col-12">
-            <a class="btn btn-primary" th:href="@{/products/product}">Add Product</a>
-        </div>
 
         <div class="col-12">
+            <form th:action="@{/products/findProduct}" method="get">
+                <input type="text" name="id" class="form-control" placeholder="Enter id">
+                <input type="submit" class=" btn btn-primary">
+            </form>
+
+
+            <!--<form th:action="@{/users/update}" method="post" th:object="${user}">-->
+                <!--<input th:type="hidden" th:field="*{id}">-->
+                <!--<div class="form-group">-->
+                    <!--<label>Login</label>-->
+                    <!--<input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">-->
+                <!--</div>-->
+                <!--<button type="submit" class="btn btn-primary">Submit</button>-->
+            <!--</form>-->
+
+        </div>
+        <div class="col-12">
+            <a class="btn btn-primary" th:href="@{/products/product}">Add Product</a>
+
             <table class="table table-bordered my-2">
                 <thead>
                 <tr>
@@ -52,10 +68,6 @@
                     <th scope="row" th:text="${product.id}">1</th>
                     <td th:text="${product.title}"></td>
                     <td th:text="${product.cost}"></td>
-                    <!--<td>-->
-                        <!--<a class="btn btn-success" th:href="@{/user/{id}(id = ${user.id})}"><i class="fas fa-edit"></i></a>-->
-                        <!--<a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>-->
-                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>

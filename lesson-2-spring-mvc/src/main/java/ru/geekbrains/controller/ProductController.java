@@ -2,18 +2,17 @@ package ru.geekbrains.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persistance.Product;
 import ru.geekbrains.persistance.ProductRepository;
 import ru.geekbrains.persistance.User;
 import ru.geekbrains.persistance.UserRepository;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -31,17 +30,29 @@ public class ProductController {
     }
 
     @GetMapping("/product")
-    public String product(Model model) throws SQLException {
+    public String productNew(Model model) throws SQLException {
         Product product = new Product();
-//        User user = userRepository.findById(id);
         model.addAttribute("product", product);
         return "product";
     }
 
     @PostMapping("/add")
     public String addProduct(Product product) {
-        //userRepository.updateById(user.getLogin(), user.getId());
         productRepository.insert(product);
         return "redirect:/products";
     }
+
+    @GetMapping("/findProduct")
+    public String findProductById(@RequestParam("id") Long id, Model model) throws SQLException {
+        Product product = productRepository.findById(id);
+        List<Product> allProduct = new ArrayList<>();
+        if (product != null) {
+            allProduct.add(product);
+
+        }
+        model.addAttribute("allProducts", allProduct);
+
+        return "products";
+    }
+
 }
