@@ -36,9 +36,22 @@ public class ProductController {
         return "product";
     }
 
+    @GetMapping("/{id}")
+    public String editProduct(@PathVariable("id") Long id, Model model) throws SQLException {
+        Product product = productRepository.findById(id);
+        model.addAttribute("product", product);
+        return "product";
+    }
+
     @PostMapping("/add")
-    public String addProduct(Product product) {
-        productRepository.insert(product);
+    public String addProduct(Product product) throws SQLException {
+        Product prod = productRepository.findById(Long.valueOf(product.getId()));
+        if (prod != null) {
+            productRepository.updateById(product.getTitle(), product.getCost(), product.getId());
+        } else {
+            productRepository.insert(product);
+        }
+
         return "redirect:/products";
     }
 

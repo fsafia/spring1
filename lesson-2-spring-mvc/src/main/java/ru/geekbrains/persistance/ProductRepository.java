@@ -57,6 +57,18 @@ public class ProductRepository {
         return res;
     }
 
+    public void updateById(String title, int cost, int id) {
+        try {
+            String sql = String.format("update products set title = '%s', cost = '%s' where id = '%s'", title, cost, id);
+            PreparedStatement stmt = conn.prepareStatement(sql
+                    /*"update users set login = ? where id = ?"*/);
+            int a = stmt.executeUpdate();
+            System.out.println(stmt.executeUpdate());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void insert(Product product) {
         try (PreparedStatement stmt = conn.prepareStatement(
                 "insert into products (title, cost) values (?, ?);")) {
