@@ -63,11 +63,11 @@
                     <th scope="row" th:text="${product.id}">1</th>
                     <td th:text="${product.title}"></td>
                     <td th:text="${product.cost}"></td>
-                    <td>
+                    <td style="display: flex">
                         <a class="btn btn-success" th:href="@{/products/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
 
                         <form th:action="@{products/{id}/delete(id = ${product.id})}" th:method="delete"/>
-                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </td>
 

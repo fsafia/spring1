@@ -51,9 +51,12 @@
                 <tr th:each="user : ${users}">
                     <th scope="row" th:text="${user.id}">1</th>
                     <td th:text="${user.login}">User login</td>
-                    <td>
+                    <td style="display: flex">
                         <a class="btn btn-success" th:href="@{/users/{id}(id = ${user.id})}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" th:href="@{/users/{id}/delete(id = ${user.id})}"><i class="far fa-trash-alt"></i></a>
+                        <!--<a class="btn btn-danger" th:href="@{/users/{id}/delete(id = ${user.id})}"><i class="far fa-trash-alt"></i></a>-->
+                        <form th:action="@{users/{id}/delete(id = ${user.id})}" th:method="delete"/>
+                            <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

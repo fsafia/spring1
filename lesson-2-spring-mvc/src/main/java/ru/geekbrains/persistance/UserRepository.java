@@ -32,6 +32,14 @@ public class UserRepository {
         }
     }
 
+    public void delete(Integer id) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "delete from users where id = ?;")) {
+            stmt.setLong(1, id);
+            stmt.execute();
+        }
+    }
+
 //    public void insert(Product product) {
 //        try (PreparedStatement stmt = conn.prepareStatement(
 //                "insert into products (title, cost) values (?, ?);")) {
