@@ -32,6 +32,17 @@ public class UserRepository {
         }
     }
 
+//    public void insert(Product product) {
+//        try (PreparedStatement stmt = conn.prepareStatement(
+//                "insert into products (title, cost) values (?, ?);")) {
+//            stmt.setString(1, product.getTitle());
+//            stmt.setInt(2, product.getCost());
+//            stmt.execute();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     public User findByLogin(String login) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(
                 "select id, login, password from users where login = ?")) {

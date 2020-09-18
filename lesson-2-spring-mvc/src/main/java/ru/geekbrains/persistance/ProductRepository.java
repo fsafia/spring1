@@ -57,9 +57,9 @@ public class ProductRepository {
         return res;
     }
 
-    public void updateById(String title, int cost, int id) {
+    public void update(Product product) {
         try {
-            String sql = String.format("update products set title = '%s', cost = '%s' where id = '%s'", title, cost, id);
+            String sql = String.format("update products set title = '%s', cost = '%s' where id = '%s'", product.getTitle(), product.getCost(), product.getId());
             PreparedStatement stmt = conn.prepareStatement(sql
                     /*"update users set login = ? where id = ?"*/);
             int a = stmt.executeUpdate();
@@ -77,6 +77,14 @@ public class ProductRepository {
             stmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void delete(Integer id) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "delete from products where id = ?;")) {
+            stmt.setLong(1, id);
+            stmt.execute();
         }
     }
 }

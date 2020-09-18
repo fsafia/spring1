@@ -43,17 +43,6 @@
                 </div>
                 <input type="submit" class=" btn btn-primary">
             </form>
-
-
-            <!--<form th:action="@{/users/update}" method="post" th:object="${user}">-->
-                <!--<input th:type="hidden" th:field="*{id}">-->
-                <!--<div class="form-group">-->
-                    <!--<label>Login</label>-->
-                    <!--<input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">-->
-                <!--</div>-->
-                <!--<button type="submit" class="btn btn-primary">Submit</button>-->
-            <!--</form>-->
-
         </div>
     </div>
     <div class="row py-2">
@@ -76,8 +65,12 @@
                     <td th:text="${product.cost}"></td>
                     <td>
                         <a class="btn btn-success" th:href="@{/products/{id}(id = ${product.id})}"><i class="fas fa-edit"></i></a>
-                        <a class="btn btn-danger" href="#"><i class="far fa-trash-alt"></i></a>
+
+                        <form th:action="@{products/{id}/delete(id = ${product.id})}" th:method="delete"/>
+                        <button type="submit" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                        </form>
                     </td>
+
                 </tr>
                 </tbody>
             </table>

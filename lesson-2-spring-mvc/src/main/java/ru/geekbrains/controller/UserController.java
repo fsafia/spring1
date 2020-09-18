@@ -34,10 +34,21 @@ public class UserController {
         return "user";
     }
 
+    @GetMapping("/newUser")
+    public String newUser(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+        return "user";
+    }
+
     @PostMapping("/update")
-    public String updateUser(User user) {
-        // TODO написать метод userRepository.update();
-        userRepository.updateById(user.getLogin(), user.getId());
+    public String updateUser(User user) throws SQLException {
+        if (user.getId() != null) {
+            userRepository.updateById(user.getLogin(), user.getId());
+        } else {
+            userRepository.insert(user);
+        }
+
         return "redirect:/users";
     }
 }

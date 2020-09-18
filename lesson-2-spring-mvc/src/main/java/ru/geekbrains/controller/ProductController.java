@@ -2,14 +2,11 @@ package ru.geekbrains.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persistance.Product;
 import ru.geekbrains.persistance.ProductRepository;
-import ru.geekbrains.persistance.User;
-import ru.geekbrains.persistance.UserRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -47,11 +44,17 @@ public class ProductController {
     public String addProduct(Product product) throws SQLException {
         Product prod = productRepository.findById(Long.valueOf(product.getId()));
         if (prod != null) {
-            productRepository.updateById(product.getTitle(), product.getCost(), product.getId());
+            productRepository.update(product);
         } else {
             productRepository.insert(product);
         }
 
+        return "redirect:/products";
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public String deleteProduct(@PathVariable("id") Integer id, Model model) throws SQLException {
+        productRepository.delete(id);
         return "redirect:/products";
     }
 

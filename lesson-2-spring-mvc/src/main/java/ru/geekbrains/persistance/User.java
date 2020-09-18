@@ -2,7 +2,7 @@ package ru.geekbrains.persistance;
 
 public class User {
 
-    private int id;
+    private Integer id;
     private String login;
     private String password;
 
@@ -12,7 +12,9 @@ public class User {
         this.password = password;
     }
 
-    public int getId() {
+    public User() {}
+
+    public Integer getId() {
         return id;
     }
 
