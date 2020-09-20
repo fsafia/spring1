@@ -64,7 +64,7 @@ public class UserRepository {
         return new User(-1, "", "");
     }
 
-    public User findById(Long id) throws SQLException {
+    public User findById(Integer id) throws SQLException {
         try (PreparedStatement stmt = conn.prepareStatement(
                 "select id, login, password from users where id = ?")) {
             stmt.setLong(1, id);
@@ -77,13 +77,23 @@ public class UserRepository {
         return new User(-1, "", "");
     }
 
-    public void updateById(String login, int id) {
+//    public void updateById(String login, int id) {
+//        try {
+//            String sql = String.format("update users set login = '%s' where id = '%s'", login, id);
+//            PreparedStatement stmt = conn.prepareStatement(sql
+//                    /*"update users set login = ? where id = ?"*/);
+//            int a = stmt.executeUpdate();
+//            System.out.println(stmt.executeUpdate());
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
+    public void update(User user) {
         try {
-            String sql = String.format("update users set login = '%s' where id = '%s'", login, id);
-            PreparedStatement stmt = conn.prepareStatement(sql
-                    /*"update users set login = ? where id = ?"*/);
-            int a = stmt.executeUpdate();
-            System.out.println(stmt.executeUpdate());
+            String sql = String.format("update users set login = '%s', password = '%s' where id = '%s'", user.getLogin(), user.getPassword(), user.getId());
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

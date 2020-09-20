@@ -35,11 +35,12 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/users/update}" method="post" th:object="${user}">
+            <form th:action="@{/users/add}" method="post" th:object="${user}">
                 <input th:type="hidden" th:field="*{id}">
                 <div class="form-group">
                     <label>Login</label>
                     <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
+                    <small id="loginError" class="form-text text-error" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Validation error</small>
                     <label>Password</label>
                     <input type="text" class="form-control" th:field="*{password}" placeholder="Enter password">
                 </div>

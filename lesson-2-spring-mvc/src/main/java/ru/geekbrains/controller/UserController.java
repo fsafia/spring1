@@ -3,10 +3,12 @@ package ru.geekbrains.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persistance.User;
 import ru.geekbrains.persistance.UserRepository;
 
+import javax.validation.Valid;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String editUser(@PathVariable("id") Long id, Model model) throws SQLException {
+    public String editUser(@PathVariable("id") Integer id, Model model) throws SQLException {
         User user = userRepository.findById(id);
         model.addAttribute("user", user);
         return "user";
@@ -38,13 +40,19 @@ public class UserController {
         return "user";
     }
 
-    @PostMapping("/update")
-    public String updateUser(User user) throws SQLException {
+    @PostMapping("/add")
+    public String addUser(@Valid User user, BindingResult bindingResult) throws SQLException {
+        if (bindingResult.hasErrors()) {
+            return "user";
+        }
+
+        //TODO реализовать проверку повторного ввода пароля используя bindingResult.rejectValue()56:06
         if (user.getId() != null) {
-            userRepository.updateById(user.getLogin(), user.getId());
+            userRepository.update(user);
         } else {
             userRepository.insert(user);
         }
+
         return "redirect:/users";
     }
 
