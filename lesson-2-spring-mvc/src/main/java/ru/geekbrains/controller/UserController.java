@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.geekbrains.dto.UserDto;
 import ru.geekbrains.persistance.User;
 import ru.geekbrains.persistance.UserRepository;
 
@@ -41,12 +42,22 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String addUser(@Valid User user, BindingResult bindingResult) throws SQLException {
+    public String addUser(@Valid UserDto userDto, BindingResult bindingResult, Model model) throws SQLException {
+
+        if (!userDto.getPassword().equals(userDto.getPassword1())) {
+            bindingResult.rejectValue("password", "must be equals");
+        }
+
         if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userDto);
             return "user";
         }
 
+
+
         //TODO реализовать проверку повторного ввода пароля используя bindingResult.rejectValue()56:06
+        User user = new User(userDto.getId(), userDto.getLogin(), userDto.getPassword());
+
         if (user.getId() != null) {
             userRepository.update(user);
         } else {

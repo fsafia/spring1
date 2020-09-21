@@ -41,8 +41,13 @@
                     <label>Login</label>
                     <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
                     <small id="loginError" class="form-text text-error" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Validation error</small>
+
                     <label>Password</label>
-                    <input type="text" class="form-control" th:field="*{password}" placeholder="Enter password">
+                    <input type="text" class="form-control"  name="password" placeholder="Enter password">
+
+                    <label>Password1</label>
+                    <input type="text" class="form-control" name="password1" placeholder="Enter password">
+                    <!--<input type="text" class="form-control" th:field="*{password1}" placeholder="Enter password">-->
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
