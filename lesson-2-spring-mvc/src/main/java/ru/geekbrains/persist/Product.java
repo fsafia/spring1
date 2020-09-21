@@ -1,4 +1,4 @@
-package ru.geekbrains.persistance;
+package ru.geekbrains.persist;
 
 public class Product {
     private int id;

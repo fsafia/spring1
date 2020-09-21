@@ -1,4 +1,4 @@
-package ru.geekbrains.persistance;
+package ru.geekbrains.persist.entity;
 
 import javax.validation.constraints.NotBlank;
 
@@ -12,8 +12,7 @@ public class User {
     @NotBlank
     private String password;
 
-    @NotBlank
-    private String password1;
+    private String matchingPassword;
 
     public User(int id, String login, String password) {
         this.id = id;
@@ -24,11 +23,11 @@ public class User {
     public User() {}
 
     public String getPassword1() {
-        return password1;
+        return matchingPassword;
     }
 
-    public void setPassword1(String password1) {
-        this.password1 = password1;
+    public void setPassword1(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
     }
     public Integer getId() {
         return id;
