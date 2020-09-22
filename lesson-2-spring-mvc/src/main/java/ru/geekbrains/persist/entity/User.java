@@ -1,17 +1,26 @@
 package ru.geekbrains.persist.entity;
 
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column
     @NotBlank   //поле логин не может быть пустым
     private String login;
 
     @NotBlank
+    @Column
     private String password;
 
+    @Transient  //это поле не надо сохранять в базу данных
     private String matchingPassword;
 
     public User(int id, String login, String password) {
