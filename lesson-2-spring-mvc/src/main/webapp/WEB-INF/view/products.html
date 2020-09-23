@@ -35,13 +35,15 @@
 <div class="container">
     <div class="row py-2">
 
-        <div class="col-12">
+        <div class="col-12 mt-3">
             <form th:action="@{/products/findProduct}" method="get">
-                <div class="form-group">
+                <!--<div class="form-group">-->
                     <label>Find product by id:</label>
-                    <input type="text" name="id" class="form-control" placeholder="Enter id">
-                </div>
-                <input type="submit" class=" btn btn-primary">
+                    <!--<input type="text" name="id" class="form-control" placeholder="Enter id">-->
+                    <input type="text" name="id" placeholder="Enter id">
+                    <button class="btn btn-primary" type="submit">Filter</button>
+                <!--</div>-->
+                <!--<input type="submit" class=" btn btn-primary">-->
             </form>
         </div>
     </div>
