@@ -1,8 +1,19 @@
-package ru.geekbrains.persist;
+package ru.geekbrains.persist.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "products")
 public class Product {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column
     private String  title;
+
+    @Column
     private int cost;
 
     public Product(){}

@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.geekbrains.persist.Product;
-import ru.geekbrains.persist.ProductRepository;
+import ru.geekbrains.persist.entity.Product;
+import ru.geekbrains.persist.repo.ProductRepository;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public String editProduct(@PathVariable("id") Long id, Model model) throws SQLException {
+    public String editProduct(@PathVariable("id") Integer id, Model model) throws SQLException {
         Product product = productRepository.findById(id);
         model.addAttribute("product", product);
         return "product";
@@ -42,7 +42,7 @@ public class ProductController {
 
     @PostMapping("/add")
     public String addProduct(Product product) throws SQLException {
-        Product prod = productRepository.findById(Long.valueOf(product.getId()));
+        Product prod = productRepository.findById(product.getId());
         if (prod != null) {
             productRepository.update(product);
         } else {
@@ -59,7 +59,7 @@ public class ProductController {
     }
 
     @GetMapping("/findProduct")
-    public String findProductById(@RequestParam("id") Long id, Model model) throws SQLException {
+    public String findProductById(@RequestParam("id") Integer id, Model model) throws SQLException {
         Product product = productRepository.findById(id);
         List<Product> allProduct = new ArrayList<>();
         if (product != null) {

@@ -93,7 +93,7 @@ public class PersistConfig {
         return jpaProperties;
     }
 
-    @Bean(name = "transactionManager")
+    @Bean(name = "transactionManager")  //позволяет управлять транзакциями
     public JpaTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         // Создание менеджера транзакций
         JpaTransactionManager tm = new JpaTransactionManager();

@@ -20,6 +20,8 @@ public class User {
     @Column
     private String password;
 
+
+
     @Transient  //это поле не надо сохранять в базу данных
     private String matchingPassword;
 
@@ -31,10 +33,13 @@ public class User {
 
     public User() {}
 
-    public String getPassword1() {
+    public String getMatchingPassword() {
         return matchingPassword;
     }
 
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
+    }
     public void setPassword1(String matchingPassword) {
         this.matchingPassword = matchingPassword;
     }
