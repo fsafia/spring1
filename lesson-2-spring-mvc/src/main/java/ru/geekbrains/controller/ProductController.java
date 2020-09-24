@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persist.entity.Product;
 import ru.geekbrains.persist.repo.ProductRepository;
+import ru.geekbrains.persist.repo.ProductRepository1;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,52 +20,111 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+//    @Autowired
+//    private ProductRepository1 productRepository;
+
     @GetMapping
-    public String allProducts(Model model) throws SQLException {
-        List<Product> allProducts = productRepository.getAllProducts();
+    public String allProducts(Model model,
+                              @RequestParam(value = "title", required = false) String title,
+                              @RequestParam(value = "min_cost", required = false) Integer minCost,
+                              @RequestParam(value = "max_cost", required = false) Integer maxCost) {
+        List<Product> allProducts = new ArrayList<>();
+        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {// - - -
+            allProducts = productRepository.findAll();
+        }
+
+        if (title != null && minCost != null && maxCost != null) {  //если все фильтры заполнены + + +
+            allProducts = productRepository.findByTitleLikeAndCostBetween(title, minCost, maxCost);
+        }
+
+        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost == null) ) { // + - -
+            allProducts = productRepository.findByTitleLike("%" + title + "%");
+        }
+
+        if (!(title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // + + -
+            allProducts = productRepository.findByTitleLikeAndCostGreaterThan("%" + title + "%", minCost);
+        }
+
+        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) { // + - +
+            allProducts = productRepository.findByTitleLikeAndCostLessThan("%" + title + "%", maxCost);
+        }
+
+        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost != null)) { //- + +
+            allProducts = productRepository.findByCostBetween(minCost, maxCost);
+        }
+
+        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) {//- - +
+            allProducts = productRepository.findByCostLessThan(maxCost);
+        }
+
+        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // - + -
+            allProducts = productRepository.findByCostGreaterThan(minCost);
+        }
+
         model.addAttribute("allProducts", allProducts);
         return "products";
     }
 
+
+//    @GetMapping
+//    public String allProducts(Model model,
+//                              @RequestParam(value = "title", required = false) String title,
+//                              @RequestParam(value = "min_cost", required = false) Integer minCost,
+//                              @RequestParam(value = "max_cost", required = false) Integer maxCost) {
+//        List<Product> allProducts;
+//        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {
+//            allProducts = productRepository.findAll();
+//        } else  {
+//            allProducts = productRepository.findByTitleLike("%" + title + "%");
+//        }
+
+
+
+
+//        List<Product> allProducts = productRepository.findAll();
+
+//        if (name == null || name.isEmpty()) {
+//            allUsers = userRepository.findAll();
+//        } else {
+//            allUsers = userRepository.findByLoginLike("%" + name + "%");
+//        }
+
+//        model.addAttribute("allProducts", allProducts);
+//        return "products";
+//    }
+
     @GetMapping("/product")
-    public String productNew(Model model) throws SQLException {
+    public String productNew(Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
         return "product";
     }
 
     @GetMapping("/{id}")
-    public String editProduct(@PathVariable("id") Integer id, Model model) throws SQLException {
-        Product product = productRepository.findById(id);
+    public String editProduct(@PathVariable("id") Integer id, Model model) {
+        Product product = productRepository.findById(id).get();
         model.addAttribute("product", product);
         return "product";
     }
 
     @PostMapping("/add")
     public String addProduct(Product product) throws SQLException {
-        Product prod = productRepository.findById(product.getId());
-        if (prod != null) {
-            productRepository.update(product);
-        } else {
-            productRepository.insert(product);
-        }
-
+        productRepository.save(product);
         return "redirect:/products";
     }
 
     @DeleteMapping("/{id}/delete")
     public String deleteProduct(@PathVariable("id") Integer id, Model model) throws SQLException {
-        productRepository.delete(id);
+        productRepository.deleteById(id);
         return "redirect:/products";
     }
 
     @GetMapping("/findProduct")
     public String findProductById(@RequestParam("id") Integer id, Model model) throws SQLException {
-        Product product = productRepository.findById(id);
+        Product product = productRepository.findById(id).get();
         List<Product> allProduct = new ArrayList<>();
         if (product != null) {
             allProduct.add(product);
-
         }
         model.addAttribute("allProducts", allProduct);
 

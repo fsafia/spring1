@@ -37,13 +37,32 @@
 
         <div class="col-12 mt-3">
             <form th:action="@{/products/findProduct}" method="get">
-                <!--<div class="form-group">-->
                     <label>Find product by id:</label>
-                    <!--<input type="text" name="id" class="form-control" placeholder="Enter id">-->
                     <input type="text" name="id" placeholder="Enter id">
-                    <button class="btn btn-primary" type="submit">Filter</button>
-                <!--</div>-->
-                <!--<input type="submit" class=" btn btn-primary">-->
+                    <button class="btn btn-primary" type="submit">Find</button>
+            </form>
+        </div>
+
+        <div class="coll-12 mt-3">
+
+            <!--<div class="coll-12 mt-3">-->
+                <!--<form>  &lt;!&ndash;не указываем метод с помощью которого форма будет обрабатываться, значит с помощью get запроса с параметром name="name" &ndash;&gt;-->
+                    <!--<label>Title</label>-->
+                    <!--<input type="text" name="title" id="title" th:value="${param.title}"/>-->
+                    <!--<button class="btn btn-primary" type="submit">Filter</button>-->
+                <!--</form>-->
+
+            <!--</div>-->
+
+            <form>
+                <label>Title</label>
+                <input type="text" name="title" id="title" th:value="${param.title}"/>
+                <label>Min cost</label>
+                <input type="text" name="min_cost" id="min_cost" th:value="${param.min_cost}"/>
+
+                <label>Max cost</label>
+                <input type="text" name="max_cost" id="max_cost" th:value="${param.max_cost}"/>
+                <button class="btn btn-primary" type="submit">Filter</button>
             </form>
         </div>
     </div>

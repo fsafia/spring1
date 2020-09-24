@@ -1,6 +1,7 @@
 package ru.geekbrains.persist.repo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.persist.entity.Product;
@@ -13,42 +14,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class ProductRepository {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
+    List<Product> findByTitleLike(String s);
 
-    @PersistenceContext
-    EntityManager em;
+    List<Product> findByTitleLikeAndCostBetween(String title, Integer minCost, Integer maxCost);
 
-    @Transactional
-    public void insert(Product product) {
-        em.persist(product);
-    }
+    List<Product> findByTitleLikeAndCostGreaterThan(String title, Integer minCost);
 
-    @Transactional
-    public void update(Product product) {
-        em.merge(product);
-    }
+    List<Product> findByTitleLikeAndCostLessThan(String title, Integer maxCost);
 
-    @Transactional
-    public void delete(Integer id) {
-        Product product = em.find(Product.class, id);
-        if (product != product) {
-            em.remove(product);
-        }
-    }
+    List<Product> findByCostBetween(Integer minCost, Integer maxCost);
 
-    public Product findById(Integer id) {
-        return em.find(Product.class, id);
-    }
+    List<Product> findByCostLessThan(Integer maxCost);
 
-    public Product findByTitle(String title) {
-        return em.createQuery("from Product where title = :title", Product.class)
-                .setParameter("title", title)
-                .getSingleResult();
-    }
+    List<Product> findByCostGreaterThan(Integer minCost);
 
-    public List<Product> getAllProducts() {
-        return  em.createQuery("from Product", Product.class).getResultList();
-    }
+//    @PersistenceContext
+//    EntityManager em;
+//
+//    @Transactional
+//    public void insert(Product product) {
+//        em.persist(product);
+//    }
+//
+//    @Transactional
+//    public void update(Product product) {
+//        em.merge(product);
+//    }
+//
+//    @Transactional
+//    public void delete(Integer id) {
+//        Product product = em.find(Product.class, id);
+//        if (product != product) {
+//            em.remove(product);
+//        }
+//    }
+//
+//    public Product findById(Integer id) {
+//        return em.find(Product.class, id);
+//    }
+//
+//    public Product findByTitle(String title) {
+//        return em.createQuery("from Product where title = :title", Product.class)
+//                .setParameter("title", title)
+//                .getSingleResult();
+//    }
+//
+//    public List<Product> getAllProducts() {
+//        return  em.createQuery("from Product", Product.class).getResultList();
+//    }
+
+
 
 //    private final Connection conn;
 
