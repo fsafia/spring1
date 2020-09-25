@@ -2,12 +2,14 @@ package ru.geekbrains.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persist.entity.Product;
 import ru.geekbrains.persist.repo.ProductRepository;
 import ru.geekbrains.persist.repo.ProductRepository1;
+import ru.geekbrains.persist.repo.ProductSpecification;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,40 +27,57 @@ public class ProductController {
                               @RequestParam(value = "title", required = false) String title,
                               @RequestParam(value = "min_cost", required = false) Integer minCost,
                               @RequestParam(value = "max_cost", required = false) Integer maxCost) {
-        List<Product> allProducts = new ArrayList<>();
-        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {// - - -
-            allProducts = productRepository.findAll();
+
+        Specification<Product> specProduct = ProductSpecification.trueLiteral();
+        if (title != null && !title.isEmpty()) {
+            specProduct = specProduct.and(ProductSpecification.titleLike(title)); //к спецификации добавл в конец критерий API
         }
 
-        if (title != null && minCost != null && maxCost != null) {  //если все фильтры заполнены + + +
-            allProducts = productRepository.findByTitleLikeAndCostBetween("%" + title + "%", minCost, maxCost);
+        if (minCost != null) {
+            specProduct = specProduct.and(ProductSpecification.minCostLike(minCost));
         }
 
-        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost == null) ) { // + - -
-            allProducts = productRepository.findByTitleLike("%" + title + "%");
+        if (maxCost != null) {
+            specProduct = specProduct.and(ProductSpecification.maxCostLike(maxCost));
         }
 
-        if (!(title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // + + -
-            allProducts = productRepository.findByTitleLikeAndCostGreaterThanEqual("%" + title + "%", minCost);
-        }
+        model.addAttribute("allProducts", productRepository.findAll(specProduct));
 
-        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) { // + - +
-            allProducts = productRepository.findByTitleLikeAndCostLessThanEqual("%" + title + "%", maxCost);
-        }
 
-        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost != null)) { //- + +
-            allProducts = productRepository.findByCostBetween(minCost, maxCost);
-        }
-
-        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) {//- - +
-            allProducts = productRepository.findByCostLessThanEqual(maxCost);
-        }
-
-        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // - + -
-            allProducts = productRepository.findByCostGreaterThanEqual(minCost);
-        }
-
-        model.addAttribute("allProducts", allProducts);
+//        List<Product> allProducts = new ArrayList<>();
+//        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {// - - -
+//            allProducts = productRepository.findAll();
+//        }
+//
+//        if (title != null && minCost != null && maxCost != null) {  //если все фильтры заполнены + + +
+//            allProducts = productRepository.findByTitleLikeAndCostBetween("%" + title + "%", minCost, maxCost);
+//        }
+//
+//        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost == null) ) { // + - -
+//            allProducts = productRepository.findByTitleLike("%" + title + "%");
+//        }
+//
+//        if (!(title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // + + -
+//            allProducts = productRepository.findByTitleLikeAndCostGreaterThanEqual("%" + title + "%", minCost);
+//        }
+//
+//        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) { // + - +
+//            allProducts = productRepository.findByTitleLikeAndCostLessThanEqual("%" + title + "%", maxCost);
+//        }
+//
+//        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost != null)) { //- + +
+//            allProducts = productRepository.findByCostBetween(minCost, maxCost);
+//        }
+//
+//        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) {//- - +
+//            allProducts = productRepository.findByCostLessThanEqual(maxCost);
+//        }
+//
+//        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // - + -
+//            allProducts = productRepository.findByCostGreaterThanEqual(minCost);
+//        }
+//
+//        model.addAttribute("allProducts", allProducts);
         return "products";
     }
 

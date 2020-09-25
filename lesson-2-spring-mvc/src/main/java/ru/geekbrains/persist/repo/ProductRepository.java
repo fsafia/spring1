@@ -2,6 +2,7 @@ package ru.geekbrains.persist.repo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.geekbrains.persist.entity.Product;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Integer>, JpaSpecificationExecutor<Product> {
     List<Product> findByTitleLike(String s);
 
     List<Product> findByTitleLikeAndCostBetween(String title, Integer minCost, Integer maxCost);
