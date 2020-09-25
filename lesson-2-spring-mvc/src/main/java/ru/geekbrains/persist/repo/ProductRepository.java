@@ -19,15 +19,15 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     List<Product> findByTitleLikeAndCostBetween(String title, Integer minCost, Integer maxCost);
 
-    List<Product> findByTitleLikeAndCostGreaterThan(String title, Integer minCost);
+    List<Product> findByTitleLikeAndCostGreaterThanEqual(String title, Integer minCost);
 
-    List<Product> findByTitleLikeAndCostLessThan(String title, Integer maxCost);
+    List<Product> findByTitleLikeAndCostLessThanEqual(String title, Integer maxCost);
 
     List<Product> findByCostBetween(Integer minCost, Integer maxCost);
 
-    List<Product> findByCostLessThan(Integer maxCost);
+    List<Product> findByCostLessThanEqual(Integer maxCost);
 
-    List<Product> findByCostGreaterThan(Integer minCost);
+    List<Product> findByCostGreaterThanEqual(Integer minCost);
 
 //    @PersistenceContext
 //    EntityManager em;

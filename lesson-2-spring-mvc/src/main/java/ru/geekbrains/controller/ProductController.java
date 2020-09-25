@@ -20,9 +20,6 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
-//    @Autowired
-//    private ProductRepository1 productRepository;
-
     @GetMapping
     public String allProducts(Model model,
                               @RequestParam(value = "title", required = false) String title,
@@ -34,7 +31,7 @@ public class ProductController {
         }
 
         if (title != null && minCost != null && maxCost != null) {  //если все фильтры заполнены + + +
-            allProducts = productRepository.findByTitleLikeAndCostBetween(title, minCost, maxCost);
+            allProducts = productRepository.findByTitleLikeAndCostBetween("%" + title + "%", minCost, maxCost);
         }
 
         if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost == null) ) { // + - -
@@ -42,11 +39,11 @@ public class ProductController {
         }
 
         if (!(title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // + + -
-            allProducts = productRepository.findByTitleLikeAndCostGreaterThan("%" + title + "%", minCost);
+            allProducts = productRepository.findByTitleLikeAndCostGreaterThanEqual("%" + title + "%", minCost);
         }
 
         if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) { // + - +
-            allProducts = productRepository.findByTitleLikeAndCostLessThan("%" + title + "%", maxCost);
+            allProducts = productRepository.findByTitleLikeAndCostLessThanEqual("%" + title + "%", maxCost);
         }
 
         if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost != null)) { //- + +
@@ -54,44 +51,16 @@ public class ProductController {
         }
 
         if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) {//- - +
-            allProducts = productRepository.findByCostLessThan(maxCost);
+            allProducts = productRepository.findByCostLessThanEqual(maxCost);
         }
 
         if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // - + -
-            allProducts = productRepository.findByCostGreaterThan(minCost);
+            allProducts = productRepository.findByCostGreaterThanEqual(minCost);
         }
 
         model.addAttribute("allProducts", allProducts);
         return "products";
     }
-
-
-//    @GetMapping
-//    public String allProducts(Model model,
-//                              @RequestParam(value = "title", required = false) String title,
-//                              @RequestParam(value = "min_cost", required = false) Integer minCost,
-//                              @RequestParam(value = "max_cost", required = false) Integer maxCost) {
-//        List<Product> allProducts;
-//        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {
-//            allProducts = productRepository.findAll();
-//        } else  {
-//            allProducts = productRepository.findByTitleLike("%" + title + "%");
-//        }
-
-
-
-
-//        List<Product> allProducts = productRepository.findAll();
-
-//        if (name == null || name.isEmpty()) {
-//            allUsers = userRepository.findAll();
-//        } else {
-//            allUsers = userRepository.findByLoginLike("%" + name + "%");
-//        }
-
-//        model.addAttribute("allProducts", allProducts);
-//        return "products";
-//    }
 
     @GetMapping("/product")
     public String productNew(Model model) {
