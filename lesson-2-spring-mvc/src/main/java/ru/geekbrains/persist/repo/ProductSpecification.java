@@ -20,4 +20,8 @@ public class ProductSpecification {
     public static Specification<Product> maxCostLike(Integer maxCost) {
         return (root, query, builder) -> builder.lessThanOrEqualTo(root.get("cost"), maxCost);
     }
+
+//    public static Specification<Product> idSort(Integer id) {
+//        return (root, query, builder) -> builder.asc(root.get("id"), id);
+//    }
 }
