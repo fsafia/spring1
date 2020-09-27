@@ -2,6 +2,7 @@ package ru.geekbrains.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import ru.geekbrains.persist.repo.ProductSpecification;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
@@ -26,9 +28,15 @@ public class ProductController {
     public String allProducts(Model model,
                               @RequestParam(value = "title", required = false) String title,
                               @RequestParam(value = "min_cost", required = false) Integer minCost,
-                              @RequestParam(value = "max_cost", required = false) Integer maxCost) {
+                              @RequestParam(value = "max_cost", required = false) Integer maxCost,
+                              @RequestParam("page") Optional<Integer> page,
+                              @RequestParam("size") Optional<Integer> size) {
+
 
         Specification<Product> specProduct = ProductSpecification.trueLiteral();
+
+        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2));
+
         if (title != null && !title.isEmpty()) {
             specProduct = specProduct.and(ProductSpecification.titleLike(title)); //к спецификации добавл в конец критерий API
         }
@@ -41,9 +49,8 @@ public class ProductController {
             specProduct = specProduct.and(ProductSpecification.maxCostLike(maxCost));
         }
 
-        model.addAttribute("allProducts", productRepository.findAll(specProduct));
-
-
+        model.addAttribute("productsPage", productRepository.findAll(specProduct, pageRequest));
+//        model.addAttribute("allProducts", productRepository.findAll(specProduct));
 //        List<Product> allProducts = new ArrayList<>();
 //        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {// - - -
 //            allProducts = productRepository.findAll();

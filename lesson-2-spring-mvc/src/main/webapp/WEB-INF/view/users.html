@@ -80,17 +80,17 @@
                         <!--<a class="page-link" href="#" >Previous</a>-->
                         <!--<a class="page-link" th:href="@{users(page=${usersPage.number}, size=${usersPage.size}, name=${name})}" th:text="Previous">Previous</a>-->
                         <!--<a class="page-link" th:href="@{users(page=${usersPage.number == 0} ? 1 : ${usersPage.number}, size=${usersPage.size}, name=${name})}" tabindex="-1">Previous</a>-->
-                        <a class="page-link" th:href="@{users(page=${usersPage.number == 0} ? 1 : ${usersPage.number}, size=${usersPage.size}, name=${name})}" >Previous</a>
+                        <a class="page-link" th:href="@{users(page=${usersPage.number == 0} ? 1 : ${usersPage.number}, size=${usersPage.size}, name=${param.name})}" >Previous</a>
                     </li>
                     <li th:each="num: ${#numbers.sequence(1, usersPage.totalPages)}"
                         class="page-item"
                         th:classappend="${num == usersPage.number + 1} ? 'active'">
                         <a class="page-link"
                            th:text="${num}"
-                           th:href="@{users(page=${num}, size=${usersPage.size}, name=${name})}">1</a> <!-- name=${name} параметр фильтрации -->
+                           th:href="@{users(page=${num}, size=${usersPage.size}, name=${param.name})}">1</a> <!-- name=${name} параметр фильтрации -->
                     </li>
                     <li class="page-item">
-                        <a a class="page-link" th:href="@{users(page=${usersPage.number + 2 >= usersPage.totalPages} ? ${usersPage.totalPages} : ${usersPage.number} + 2 , size=${usersPage.size}, name=${name})}" >Next</a>
+                        <a a class="page-link" th:href="@{users(page=${usersPage.number + 2 >= usersPage.totalPages} ? ${usersPage.totalPages} : ${usersPage.number} + 2 , size=${usersPage.size}, name=${param.name})}" >Next</a>
                     </li>
                 </ul>
             </nav>
