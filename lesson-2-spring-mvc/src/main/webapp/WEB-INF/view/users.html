@@ -90,7 +90,7 @@
                            th:href="@{users(page=${num}, size=${usersPage.size}, name=${name})}">1</a> <!-- name=${name} параметр фильтрации -->
                     </li>
                     <li class="page-item">
-                        <a a class="page-link" th:href="@{users(page=${usersPage.number + 2 == usersPage.totalPages} ? ${usersPage.totalPages} : ${usersPage.number} + 2 , size=${usersPage.size}, name=${name})}" >Next</a>
+                        <a a class="page-link" th:href="@{users(page=${usersPage.number + 2 >= usersPage.totalPages} ? ${usersPage.totalPages} : ${usersPage.number} + 2 , size=${usersPage.size}, name=${name})}" >Next</a>
                     </li>
                 </ul>
             </nav>
