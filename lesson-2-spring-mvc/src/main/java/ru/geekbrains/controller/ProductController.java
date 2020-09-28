@@ -3,6 +3,7 @@ package ru.geekbrains.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class ProductController {
 
         Specification<Product> specProduct = ProductSpecification.trueLiteral();
 
-        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2));
+        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(4), Sort.by(Sort.Direction.ASC, "title"));
 
         if (title != null && !title.isEmpty()) {
             specProduct = specProduct.and(ProductSpecification.titleLike(title)); //к спецификации добавл в конец критерий API

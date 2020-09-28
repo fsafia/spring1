@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import ru.geekbrains.persist.repo.UserSpecification;
 
 import javax.validation.Valid;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,7 @@ public class UserController {
                            @RequestParam("size") Optional<Integer> size) {
         logger.info("Filtering by name; {}", name);
 
-        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(1));
+        PageRequest pageRequest = PageRequest.of(page.orElse(1) - 1, size.orElse(2), Sort.by(Sort.Direction.DESC, "login"));
 
         Specification<User> specUser = UserSpecification.trueLiteral();
         if (name != null && !name.isEmpty()) {
