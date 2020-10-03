@@ -1,0 +1,35 @@
+GET http://localhost:8080/mvc-app/api/v1/user/all
+
+###
+
+GET http://localhost:8080/mvc-app/api/v1/user/2/id
+
+###
+
+POST http://localhost:8080/mvc-app/api/v1/user
+Content-Type: application/json
+{
+  "login": "uliya10",
+  "password": "456",
+  "matchingPassword": null
+}
+
+###
+не работает запрос PUT POST
+###
+
+PUT http://localhost:8080/mvc-app/api/v1/user
+
+Content-Type: application/json
+{
+  "id": 2,
+  "login": "uliya3",
+  "password": "456",
+  "matchingPassword": null
+}
+
+###
+
+DELETE http://localhost:8080/mvc-app/api/v1/user/2/id
+
+###
