@@ -56,12 +56,12 @@ public class UserResourse {
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> illegalArgumentException(IllegalArgumentException e) {
-        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ErrorResponse> illegalArgumentException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorResponse("BAD_REQUEST", e.getLocalizedMessage()), HttpStatus.BAD_REQUEST);//ResponseEntity<T> (T, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> sqlIntegrityConstraintViolationExceptionHandler (SQLIntegrityConstraintViolationException e) {
-        return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ErrorResponse> sqlIntegrityConstraintViolationExceptionHandler (SQLIntegrityConstraintViolationException e) { //когда в бд запис некоорректные данные()
+        return new ResponseEntity<>(new ErrorResponse("INTERNAL_SERVER_ERROR", e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
