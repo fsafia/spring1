@@ -17,8 +17,8 @@ public class User {
     private String login;
 
     @NotBlank
-    @Column
-    private String password;
+    @Column(length = 512)
+    private String password; //char[]
 
 
 
