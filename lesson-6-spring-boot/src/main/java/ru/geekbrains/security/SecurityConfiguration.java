@@ -24,20 +24,20 @@ public class SecurityConfiguration {
 
     // процесс авторизации
     //для создания нового пользователя
-    @Autowired
-    public void authConfigure(AuthenticationManagerBuilder auth,
-                              UserDetailsService userDetailService,
-                              PasswordEncoder passwordEncoder) throws Exception {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailService);
-        provider.setPasswordEncoder(passwordEncoder);
-        auth.authenticationProvider(provider);
-        auth.inMemoryAuthentication()
-                .withUser("mem_user")
-                .password(passwordEncoder.encode("password")) //password
-//                .password("{bcrypt}$2y$12$A/A8ZYZ1m.7iTjm1Y8dwDOdYrQURN/Zt7Lz9CjM0xKpurI7UJalJG") //password
-                .roles("ADMIN");
-    }
+//    @Autowired
+//    public void authConfigure(AuthenticationManagerBuilder auth,
+//                              UserDetailsService userDetailService,
+//                              PasswordEncoder passwordEncoder) throws Exception {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setUserDetailsService(userDetailService);
+//        provider.setPasswordEncoder(passwordEncoder);
+//        auth.authenticationProvider(provider);
+//        auth.inMemoryAuthentication()
+//                .withUser("mem_user")
+//                .password(passwordEncoder.encode("password")) //password
+////                .password("{bcrypt}$2y$12$A/A8ZYZ1m.7iTjm1Y8dwDOdYrQURN/Zt7Lz9CjM0xKpurI7UJalJG") //password
+//                .roles("ADMIN");
+//    }
 
 
     @Bean
@@ -50,12 +50,13 @@ public class SecurityConfiguration {
     @Order(2)
     public static class UiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
-        @Override
+        @Override  /////////////////////////c такой настройкой может любой пользователь на любую страницу попасть
         protected void configure(HttpSecurity http) throws Exception{
             http
                     .authorizeRequests()
                     .antMatchers("/").anonymous()//даже не авторизованный пользователь имеет доступ к этой странице
-                    .antMatchers("/users/**").hasRole("ADMIN")
+                    .antMatchers("/users/**").hasRole("ADMIN")//**любой URL , //* только 1 сегмент в URL
+                    .antMatchers("/products/**").hasAnyRole("ADMIN", "MANAGER")
                     .and()
                     .formLogin();
         }
@@ -64,26 +65,26 @@ public class SecurityConfiguration {
     //для использования Basic авторизации
 //    @Configuration
 //    @Order(1)
-    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception{
-            http
-                    .authorizeRequests()
-                    .antMatchers("/api/**").hasRole("ADMIN")
-                    .and()
-                    .httpBasic()
-                    .authenticationEntryPoint((req,resp,exception) -> {
-                        resp.setContentType("application/json");
-                        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        resp.setCharacterEncoding("UTF-8");
-                        resp.getWriter().println("{ \"error\": \"" + exception.getMessage() + "\" }");
-                    })
-                    .and()
-                    .csrf().disable() //отключили проверку csrf, для рест сервисов она не нужна, т.к.сессия не создается в рест-сеовисах
-                    .sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS); //сессия создаваться не будет
-        }
-    }
+//    public static class ApiWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
+//        @Override
+//        protected void configure(HttpSecurity http) throws Exception{
+//            http
+//                    .authorizeRequests()
+//                    .antMatchers("/api/**").hasRole("ADMIN")
+//                    .and()
+//                    .httpBasic()
+//                    .authenticationEntryPoint((req,resp,exception) -> {
+//                        resp.setContentType("application/json");
+//                        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//                        resp.setCharacterEncoding("UTF-8");
+//                        resp.getWriter().println("{ \"error\": \"" + exception.getMessage() + "\" }");
+//                    })
+//                    .and()
+//                    .csrf().disable() //отключили проверку csrf, для рест сервисов она не нужна, т.к.сессия не создается в рест-сеовисах
+//                    .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS); //сессия создаваться не будет
+//        }
+//    }
 
 
 }
