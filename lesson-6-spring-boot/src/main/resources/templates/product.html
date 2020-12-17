@@ -35,19 +35,13 @@
 <div class="container">
     <div class="row py-2">
         <div class="col-12">
-            <form th:action="@{/users/add}" method="post" th:object="${user}">
+            <form th:action="@{/products/add}" method="post" th:object="${product}">
                 <input th:type="hidden" th:field="*{id}">
                 <div class="form-group">
-                    <label>Login</label>
-                    <input type="text" class="form-control" th:field="*{login}" placeholder="Enter login">
-                    <small id="loginError" class="form-text text-error" th:if="${#fields.hasErrors('login')}" th:errors="*{login}">Validation error</small>
-
-                    <label>Password</label>
-                    <input type="text" class="form-control"  name="password" placeholder="Enter password">
-
-                    <!--<label>Password1</label>-->
-                    <!--<input type="text" class="form-control" name="password1" placeholder="Enter password">-->
-                    <!--<input type="text" class="form-control" th:field="*{password1}" placeholder="Enter password">-->
+                    <label>Title</label>
+                    <input type="text" class="form-control" th:field="*{title}" placeholder="Enter title">
+                    <label>Cost</label>
+                    <input type="text" class="form-control" th:field="*{cost}" placeholder="Enter cost">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

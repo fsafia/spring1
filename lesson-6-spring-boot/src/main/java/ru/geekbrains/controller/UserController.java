@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,8 +17,6 @@ import ru.geekbrains.persist.repo.UserSpecification;
 
 import javax.validation.Valid;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -59,7 +58,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String editUser(@PathVariable("id") Integer id, Model model) throws SQLException {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(()-> new NotFoundException("user with id = " + id + " not found"));
         model.addAttribute("user", user);
         return "user";
     }
@@ -91,6 +90,11 @@ public class UserController {
         return "redirect:/users";
     }
 
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public String NotFoundExseptionHandler(NotFoundException notFoundExseption) {
+//        return "not_found";
+//    }
 
 //    @GetMapping
 //    public String allUsers(Model model) throws SQLException {

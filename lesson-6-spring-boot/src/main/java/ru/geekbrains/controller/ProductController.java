@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.persist.entity.Product;
 import ru.geekbrains.persist.repo.ProductRepository;
-import ru.geekbrains.persist.repo.ProductRepository1;
 import ru.geekbrains.persist.repo.ProductSpecification;
 
 import java.sql.SQLException;
@@ -98,7 +97,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String editProduct(@PathVariable("id") Integer id, Model model) {
-        Product product = productRepository.findById(id).get();
+        Product product = productRepository.findById(id).orElseThrow(()-> new NotFoundException("product with id = " + id + " not found"));
         model.addAttribute("product", product);
         return "product";
     }
@@ -118,11 +117,12 @@ public class ProductController {
     @GetMapping("/findProduct")
     public String findProductById(@RequestParam("id") Integer id, Model model) throws SQLException {
         Product product = productRepository.findById(id).get();
+//        Product product = productRepository.findById(id).orElseThrow(()-> new NotFoundException("product by " + id + " not found"));
         List<Product> allProduct = new ArrayList<>();
         if (product != null) {
             allProduct.add(product);
         }
-        model.addAttribute("allProducts", allProduct);
+        model.addAttribute("productsPage", allProduct);
 
         return "products";
     }
