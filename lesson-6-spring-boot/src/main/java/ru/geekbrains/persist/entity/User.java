@@ -3,6 +3,7 @@ package ru.geekbrains.persist.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -17,10 +18,14 @@ public class User {
     private String login;
 
     @NotBlank
-    @Column
-    private String password;
+    @Column(length = 512)
+    private String password; //char[]
 
-
+    @ManyToMany
+    @JoinTable(name = "users_roles",
+                joinColumns = {@JoinColumn(name = "user_id")},
+                inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
     @Transient  //это поле не надо сохранять в базу данных
     private String matchingPassword;

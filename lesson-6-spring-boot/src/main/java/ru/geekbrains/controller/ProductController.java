@@ -13,8 +13,6 @@ import ru.geekbrains.persist.repo.ProductRepository;
 import ru.geekbrains.persist.repo.ProductSpecification;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -50,41 +48,6 @@ public class ProductController {
         }
 
         model.addAttribute("productsPage", productRepository.findAll(specProduct, pageRequest));
-//        model.addAttribute("allProducts", productRepository.findAll(specProduct));
-//        List<Product> allProducts = new ArrayList<>();
-//        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost == null)) {// - - -
-//            allProducts = productRepository.findAll();
-//        }
-//
-//        if (title != null && minCost != null && maxCost != null) {  //если все фильтры заполнены + + +
-//            allProducts = productRepository.findByTitleLikeAndCostBetween("%" + title + "%", minCost, maxCost);
-//        }
-//
-//        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost == null) ) { // + - -
-//            allProducts = productRepository.findByTitleLike("%" + title + "%");
-//        }
-//
-//        if (!(title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // + + -
-//            allProducts = productRepository.findByTitleLikeAndCostGreaterThanEqual("%" + title + "%", minCost);
-//        }
-//
-//        if (!(title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) { // + - +
-//            allProducts = productRepository.findByTitleLikeAndCostLessThanEqual("%" + title + "%", maxCost);
-//        }
-//
-//        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost != null)) { //- + +
-//            allProducts = productRepository.findByCostBetween(minCost, maxCost);
-//        }
-//
-//        if ((title == null || title.isEmpty()) && (minCost == null) && (maxCost != null)) {//- - +
-//            allProducts = productRepository.findByCostLessThanEqual(maxCost);
-//        }
-//
-//        if ((title == null || title.isEmpty()) && (minCost != null) && (maxCost == null)) { // - + -
-//            allProducts = productRepository.findByCostGreaterThanEqual(minCost);
-//        }
-//
-//        model.addAttribute("allProducts", allProducts);
         return "products";
     }
 
@@ -116,15 +79,16 @@ public class ProductController {
 
     @GetMapping("/findProduct")
     public String findProductById(@RequestParam("id") Integer id, Model model) throws SQLException {
-        Product product = productRepository.findById(id).get();
-//        Product product = productRepository.findById(id).orElseThrow(()-> new NotFoundException("product by " + id + " not found"));
-        List<Product> allProduct = new ArrayList<>();
-        if (product != null) {
-            allProduct.add(product);
+        Specification<Product> specProduct = ProductSpecification.trueLiteral();
+
+        PageRequest pageRequest = PageRequest.of( 0, 1);
+
+        if (id != null) {
+            specProduct = specProduct.and(ProductSpecification.idEquals(id)); //к спецификации добавл в конец критерий API
         }
-        model.addAttribute("productsPage", allProduct);
 
+        model.addAttribute("productsPage", productRepository.findAll(specProduct, pageRequest));
         return "products";
-    }
 
+    }
 }

@@ -8,11 +8,9 @@ import ru.geekbrains.controller.NotFoundException;
 import ru.geekbrains.persist.entity.User;
 import ru.geekbrains.persist.repo.UserRepository;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-//@CrossOrigin(origins = "http://localhost:63342")  //не нужно когда исходники лежат на том же сервере с которого приходят rest запрос
 @RequestMapping("/api/v1/user")
 @RestController
 public class UserResourse {

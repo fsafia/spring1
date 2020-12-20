@@ -21,7 +21,8 @@ public class ProductSpecification {
         return (root, query, builder) -> builder.lessThanOrEqualTo(root.get("cost"), maxCost);
     }
 
-//    public static Specification<Product> idSort(Integer id) {
-//        return (root, query, builder) -> builder.asc(root.get("id"), id);
-//    }
+    public static Specification<Product> idEquals(Integer id) {
+        return (root, query, builder) -> builder.equal(root.get("id"), id);
+    }
+
 }
