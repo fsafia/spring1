@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <!-- Required meta tags -->
@@ -30,12 +30,34 @@
             </li>
         </ul>
     </div>
+    <!--кнопка логаут видна только автроизованным пользователям -->
+    <form sec:authorize="isAuthenticated()" class="form-inline my-2 my-lg-0"
+          th:action="@{/logout}"
+          method="post">
+        <button class="btn btn-outline-success my-2 my-sm-0">
+            Logout <span sec:authentication="principal.username"></span><!--для вывода secure -информации на экран -->
+        </button>
+    </form>
 </nav>
 
 <div class="container">
     <div class="row py-2">
-        <p>Welcome</p>
+        <p id="welcome">Welcome</p>
     </div>
+    <div class="row py-2">
+        <div class="col-12">
+            <a class="btn btn-primary" th:href="@{/products}">Products</a>
+            <a class="btn btn-primary" th:href="@{/users}">Users</a>
+        </div>
+    </div>
+    <!--<div class="coll-12 mt-3">-->
+        <!--<div>-->
+            <!--<button class="btn btn-primary" type="submit">Products</button>-->
+        <!--</div>-->
+        <!--<div>-->
+            <!--<button class="btn btn-primary" type="submit">Users</button>-->
+        <!--</div>-->
+    <!--</div>-->
 </div>
 
 <!-- Optional JavaScript -->

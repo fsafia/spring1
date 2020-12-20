@@ -13,8 +13,6 @@ import ru.geekbrains.persist.repo.ProductRepository;
 import ru.geekbrains.persist.repo.ProductSpecification;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -81,13 +79,6 @@ public class ProductController {
 
     @GetMapping("/findProduct")
     public String findProductById(@RequestParam("id") Integer id, Model model) throws SQLException {
-//        Page page;
-//        productRepository.findById(id).get();
-//        productRepository.findById(id).
-//
-//
-//
-//        model.addAttribute("productsPage", allProduct);
         Specification<Product> specProduct = ProductSpecification.trueLiteral();
 
         PageRequest pageRequest = PageRequest.of( 0, 1);
@@ -100,5 +91,4 @@ public class ProductController {
         return "products";
 
     }
-
 }
